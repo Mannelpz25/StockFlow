@@ -20,7 +20,7 @@
     "react-router-dom": "6.22.0",
     "vite-plugin-pwa": "0.18.2"
   },
-  "homepage": "https://mannelpz25.github.io/StockFlow/#",
+  "homepage": "https://mannelpz25.github.io/StockFlow",
   "devDependencies": {
     "@types/react": "18.2.55",
     "@types/react-dom": "18.2.19",
