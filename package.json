@@ -15,12 +15,12 @@
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
     "dotenv": "^16.4.4",
+    "moment": "^2.30.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.22.0",
     "vite-plugin-pwa": "0.18.2"
   },
-  "homepage": "https://mannelpz25.github.io/StockFlow",
   "devDependencies": {
     "@types/react": "18.2.55",
     "@types/react-dom": "18.2.19",

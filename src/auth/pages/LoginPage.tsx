@@ -1,8 +1,14 @@
-import { Grid, TextField, Button, Alert } from "@mui/material";
+import {
+	Grid,
+	TextField,
+	Button,
+	Alert,
+	CircularProgress,
+} from "@mui/material";
 import { useForm } from "../../hooks";
 import { AuthLayout } from "../layout/AuthLayout";
-import { useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 const formData = {
 	username: "",
@@ -10,14 +16,18 @@ const formData = {
 };
 
 export const LoginPage = () => {
-	const {login} = useAuth();
-	const [errorMessage, _setErrorMessage] = useState("");
-	const [isAuthenticating, _setIsAuthenticating] = useState(false);
-	const { username, password, onInputChange } = useForm(formData);
+	const { login, errorMessage } = useAuth();
+	const [isLoading, setIsLoading] = useState(false);
+	const { email, password, onInputChange } = useForm(formData);
 
-	const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	useEffect(() => {
+		setIsLoading(false);
+	}, [errorMessage]);
+
+	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		login({ username, password })
+		setIsLoading(true);
+		await login(email, password);
 	};
 
 	return (
@@ -29,12 +39,12 @@ export const LoginPage = () => {
 				<Grid container>
 					<Grid item xs={12} sx={{ mt: 2 }}>
 						<TextField
-							label="Usuario"
-							type="text"
-							placeholder="Usuario"
+							label="Correo electrónico"
+							type="email"
+							placeholder="Correo electrónico"
 							fullWidth
-							name="username"
-							value={username}
+							name="email"
+							value={email ?? ""}
 							onChange={onInputChange}
 						/>
 					</Grid>
@@ -45,7 +55,7 @@ export const LoginPage = () => {
 							placeholder="Contraseña"
 							fullWidth
 							name="password"
-							value={password}
+							value={password ?? ""}
 							onChange={onInputChange}
 						/>
 					</Grid>
@@ -54,24 +64,28 @@ export const LoginPage = () => {
 						spacing={2}
 						sx={{ mb: 2, mt: 1, justifyContent: "center" }}
 					>
-						<Grid
-							item
-							xs={12}
-							display={!!errorMessage ? "" : "none"}
-						>
-							<Alert severity="error">{errorMessage}</Alert>
-						</Grid>
+						{!!errorMessage && !isLoading && (
+							<Grid item xs={12}>
+								<Alert severity="error">{errorMessage}</Alert>
+							</Grid>
+						)}
 						<Grid item xs={12} sm={6}>
-							<Button
-								disabled={isAuthenticating}
-								type="submit"
-								variant="contained"
-								color="secondary"
-								fullWidth
-								size="large"
-							>
-								Ingresar
-							</Button>
+							{isLoading ? (
+								<Grid container justifyContent="center">
+									<CircularProgress color="secondary" />
+								</Grid>
+							) : (
+								<Button
+									disabled={isLoading || !email || !password}
+									type="submit"
+									variant="contained"
+									color="secondary"
+									fullWidth
+									size="large"
+								>
+									Ingresar
+								</Button>
+							)}
 						</Grid>
 					</Grid>
 				</Grid>
