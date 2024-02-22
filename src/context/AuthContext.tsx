@@ -7,6 +7,7 @@ import moment from "moment";
 // Definir el tipo de usuario
 export interface User {
 	uid: string;
+	password: string;
 	name: string;
 	email: string;
 	employeeId: number;
@@ -85,6 +86,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 		const { uid, employeeId, name } = response as LoginResponseSuccess;
 		const user: User = {
 			uid,
+			password,
 			employeeId,
 			name,
 			email: email,

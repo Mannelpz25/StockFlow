@@ -44,6 +44,7 @@ export const LoginPage = () => {
 							placeholder="Correo electrónico"
 							fullWidth
 							name="email"
+							disabled={isLoading}
 							value={email ?? ""}
 							onChange={onInputChange}
 						/>
@@ -55,6 +56,7 @@ export const LoginPage = () => {
 							placeholder="Contraseña"
 							fullWidth
 							name="password"
+							disabled={isLoading}
 							value={password ?? ""}
 							onChange={onInputChange}
 						/>

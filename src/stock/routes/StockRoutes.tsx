@@ -1,11 +1,22 @@
-import { Route, Routes, Navigate } from "react-router-dom"
-import { HomePage } from "../pages/HomePage"
+import { Route, Routes, Navigate } from "react-router-dom";
+import { StockPickingPage } from "../pages/StockPickingPage";
+import { useStock } from "../../context/StockContext";
+import { StockPickingValidatePage } from "../pages/StockPickingValidatePage";
+import { TagsAssignPage } from "../pages/TagsAssignPage";
 
 export const StockRoutes = () => {
-  return (
-    <Routes>
-        <Route path="/" element={<HomePage/>} />
-        <Route path="/*" element={<Navigate to="/"/>} />
-    </Routes>
-  )
-}
+	const { activeStockPicking, activeScreen } = useStock();
+	return (
+		<Routes>
+			{activeStockPicking && activeScreen === "stockPickingValidate" ? (
+				<Route path="/" element={<StockPickingValidatePage />} />
+			) : activeScreen === "stockPicking" ? (
+				<Route path="/" element={<StockPickingPage />} />
+			) : activeScreen === "tagsAssign" && (
+        <Route path="/" element={<TagsAssignPage />} />
+      )}
+
+			<Route path="/*" element={<Navigate to="/" />} />
+		</Routes>
+	);
+};

@@ -1,7 +1,7 @@
 import { Grid, IconButton, Toolbar, Box, Typography } from "@mui/material";
 import { MenuRounded } from "@mui/icons-material";
 
-export const TopBar = ({ toggleDrawer, title }: any) => {
+export const TopBar = ({ toggleDrawer, title, components }: any) => {
 	return (
 		<Box
 			sx={{
@@ -46,6 +46,21 @@ export const TopBar = ({ toggleDrawer, title }: any) => {
 						</Typography>
 					</Grid>
 				</Grid>
+				{components?.length > 0 && (
+					<Grid
+						item
+						sx={{
+							display: "flex",
+							justifyContent: "flex-end",
+							alignItems: "center",
+							gap: 2,
+						}}
+					>
+						{components.map((component: any, index: number) => (
+							<div key={index}>{component}</div>
+						))}
+					</Grid>
+				)}
 			</Toolbar>
 		</Box>
 	);

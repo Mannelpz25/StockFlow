@@ -5,9 +5,10 @@ import { useState } from "react";
 interface StockLayoutProps {
     title: string;
 	children: React.ReactNode;
+  components?: React.ReactNode[];
 }
 
-export const StockLayout = ({ children, title }: StockLayoutProps) => {
+export const StockLayout = ({ children, title, components }: StockLayoutProps) => {
     const [open, setOpen] = useState(false);
     const toggleDrawer =(open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -22,14 +23,16 @@ export const StockLayout = ({ children, title }: StockLayoutProps) => {
       setOpen(open );
     };
 	return (
-		<>
-			<Box sx={{ display: "flex", m: 0, p: 0 }}>
-				<TopBar toggleDrawer={toggleDrawer} title={title} />
+		<div style={{ display: "flex" }}>
+			<Box sx={{ display: "flex", m: 0, p: 0, position: "fixed", zIndex: 1, width: "100%" }}>
+				<TopBar toggleDrawer={toggleDrawer} title={title} components={components} />
 			</Box>
 			<SideBar open={open} toggleDrawer={toggleDrawer} />
 			<Divider />
 
-			<Box sx={{ pl: 2 }}>{children}</Box>
-		</>
+			<Box sx={{ p: 2, ml: 0, mt: 8, width: "100%" }}>
+        {children}
+      </Box>
+		</div>
 	);
 };

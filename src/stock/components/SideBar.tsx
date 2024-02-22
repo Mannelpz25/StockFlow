@@ -6,30 +6,20 @@ import {
 	ListItem,
 	ListItemButton,
 	ListItemIcon,
+	Typography,
 } from "@mui/material";
 import {
-	Workspaces,
 	Label,
-	Help,
-	DeleteSweep,
 	Logout,
+	Description,
+	Inventory,
 } from "@mui/icons-material";
 import { useAuth } from "../../context/AuthContext";
-// import {useState } from "react";
+import { useStock } from "../../context/StockContext";
 
 export const SideBar = ({ open, toggleDrawer }: any) => {
 	const { logout } = useAuth();
-	// const dispatch = useDispatch();
-	// const [anchorEl, setAnchorEl] = useState(null);
-	// const onClickButton = (event) => {
-	// 	setAnchorEl(event.currentTarget);
-	// 	dispatch(openMenu());
-	// };
-
-	// const onOpenTrash = (event) => {
-	// 	dispatch(setActiveTrash(true));
-	// 	dispatch(setActiveWorkspace(null));
-	// };
+	const { activeStockPicking, setActiveScreen, activeScreen } = useStock();
 
 	return (
 		<>
@@ -48,7 +38,7 @@ export const SideBar = ({ open, toggleDrawer }: any) => {
 					display: { xs: "block" },
 					"& .MuiDrawer-paper": {
 						boxSizing: "border-box",
-						width: 60,
+						width: 240,
 					},
 				}}
 			>
@@ -69,13 +59,40 @@ export const SideBar = ({ open, toggleDrawer }: any) => {
 				</Box>
 				<Divider />
 				<List disablePadding sx={{ height: "100%" }}>
+					{activeStockPicking != undefined && (
+						<ListItem disablePadding>
+							<ListItemButton sx={{ minHeight: 50 }} onClick={() => {
+								setActiveScreen("stockPickingValidate");
+							}}
+							disabled={activeScreen === "stockPickingValidate"}>	
+								<ListItemIcon
+									sx={{
+										color: "white",
+										minWidth: 24,
+									}}
+								>
+									<Inventory />
+								</ListItemIcon>
+								<Typography
+									sx={{
+										marginLeft: 1,
+										color: "white",
+										fontSize: 18,
+									}}
+								>
+									{activeStockPicking.pickingOrder}
+								</Typography>
+							</ListItemButton>
+						</ListItem>
+					)}
 					<ListItem disablePadding>
 						<ListItemButton
-							id="workspaces"
+							id="description"
 							sx={{ minHeight: 50 }}
 							onClick={() => {
-								console.log("workspaces");
+								setActiveScreen("stockPicking");
 							}}
+							disabled={activeScreen === "stockPicking"}
 						>
 							<ListItemIcon
 								sx={{
@@ -83,8 +100,17 @@ export const SideBar = ({ open, toggleDrawer }: any) => {
 									minWidth: 24,
 								}}
 							>
-								<Workspaces />
+								<Description />
 							</ListItemIcon>
+							<Typography
+								sx={{
+									marginLeft: 1,
+									color: "white",
+									fontSize: 18,
+								}}
+							>
+								Ordenes de surtido
+							</Typography>
 						</ListItemButton>
 					</ListItem>
 					<ListItem disablePadding>
@@ -92,8 +118,9 @@ export const SideBar = ({ open, toggleDrawer }: any) => {
 							id="tags"
 							sx={{ minHeight: 50 }}
 							onClick={() => {
-								console.log("tags");
+								setActiveScreen("tagsAssign");
 							}}
+							disabled={activeScreen === "tagsAssign"}
 						>
 							<ListItemIcon
 								sx={{
@@ -103,37 +130,18 @@ export const SideBar = ({ open, toggleDrawer }: any) => {
 							>
 								<Label />
 							</ListItemIcon>
-						</ListItemButton>
-					</ListItem>
-					<ListItem disablePadding>
-						<ListItemButton
-							onClick={() => {
-								console.log("trash");
-							}}
-							sx={{ minHeight: 50 }}
-						>
-							<ListItemIcon
+							<Typography
 								sx={{
+									marginLeft: 1,
 									color: "white",
-									minWidth: 24,
+									fontSize: 18,
 								}}
 							>
-								<DeleteSweep />
-							</ListItemIcon>
+								Asignar etiquetas
+							</Typography>
 						</ListItemButton>
 					</ListItem>
-					<ListItem disablePadding>
-						<ListItemButton sx={{ minHeight: 50 }}>
-							<ListItemIcon
-								sx={{
-									color: "white",
-									minWidth: 24,
-								}}
-							>
-								<Help />
-							</ListItemIcon>
-						</ListItemButton>
-					</ListItem>
+
 					<ListItem
 						disablePadding
 						sx={{ position: "absolute", bottom: 0 }}
@@ -143,17 +151,23 @@ export const SideBar = ({ open, toggleDrawer }: any) => {
 								minHeight: 50,
 								bgcolor: "secondary.main",
 								":hover": { bgcolor: "secondary.dark" },
+								paddingX: 2,
+								justifyContent: "center",
 							}}
 							onClick={logout}
+							disabled={activeStockPicking != undefined}
 						>
-							<ListItemIcon
+							<Logout sx={{ color: "white" }} />
+							<Typography
 								sx={{
+									marginLeft: 1,
 									color: "white",
-									minWidth: 24,
+									fontSize: 18,
+									fontWeight: "bold",
 								}}
 							>
-								<Logout />
-							</ListItemIcon>
+								Salir
+							</Typography>
 						</ListItemButton>
 					</ListItem>
 				</List>
